@@ -62,6 +62,8 @@ def get_metadata(data_path, dataset_name, year, novel=False):
 def convert_data_to_df(file_list, dataset, year):
     df = pd.DataFrame(columns=['text', 'docid', 'line_number', 'file'])
     for file in file_list:
+
+        print((file))
         with open(file, 'r') as f:
             data = f.read()
 
@@ -89,7 +91,7 @@ def add_flag(df, metadata, flag_column):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--year', default='2003')
+    parser.add_argument('--year', default='2004')
     parser.add_argument('--dataset', default='trec')
 
     args = parser.parse_args()
@@ -116,4 +118,7 @@ if __name__ == '__main__':
 
     # Export data
     df = df.drop_duplicates()
+    print('full data size: ', len(df))
+    print('relevant data count: ', len(df[df['relevant_flag'] == True]))
+    print('novel data count: ', len(df[df['novel_flag'] == True]))
     df.to_parquet(os.path.join(data_path, year + '.parquet'))
