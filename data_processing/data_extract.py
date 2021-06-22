@@ -1,5 +1,8 @@
 import argparse
 import os
+import sys
+sys.path.insert(0, os.getcwd())
+
 import pandas as pd
 from bs4 import BeautifulSoup
 from data_processing.config import text_column, id_column, line_column, file_column, relevant_flag, novel_flag
@@ -8,7 +11,7 @@ from data_processing.config import text_column, id_column, line_column, file_col
 def get_data_path(dataset_name):
     if dataset_name.lower() == 'trec':
         return os.path.join(
-            os.getcwd(), '..', '..', 'data', 'trec'
+            os.getcwd(), '..', 'data', 'trec'
         )
     # TODO RTE
 
@@ -91,8 +94,9 @@ def add_flag(df, metadata, flag_column):
 
 
 if __name__ == '__main__':
+
     parser = argparse.ArgumentParser()
-    parser.add_argument('--year', default='2004')
+    parser.add_argument('--year', default='2003')
     parser.add_argument('--dataset', default='trec')
 
     args = parser.parse_args()
@@ -122,4 +126,5 @@ if __name__ == '__main__':
     print('full data size: ', len(df))
     print('relevant data count: ', len(df[df[relevant_flag] == True]))
     print('novel data count: ', len(df[df[novel_flag] == True]))
+    df.head().to_excel(os.path.join(data_path, year + '.xlsx'), engine='xlsxwriter')
     df.to_parquet(os.path.join(data_path, year + '.parquet'))
