@@ -126,5 +126,5 @@ if __name__ == '__main__':
     print('full data size: ', len(df))
     print('relevant data count: ', len(df[df[relevant_flag] == True]))
     print('novel data count: ', len(df[df[novel_flag] == True]))
-    df.head().to_excel(os.path.join(data_path, year + '.xlsx'), engine='xlsxwriter')
+    df.head(50).to_excel(os.path.join(data_path, year + '.xlsx'), engine='xlsxwriter')
     df.to_parquet(os.path.join(data_path, year + '.parquet'))
