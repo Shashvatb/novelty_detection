@@ -1,0 +1,6 @@
+text_column = 'text'
+id_column = 'docid'
+line_column = 'line_number'
+file_column = 'file'
+relevant_flag = 'relevant_flag'
+novel_flag = 'novel_flag'

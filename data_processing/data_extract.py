@@ -1,7 +1,8 @@
 import argparse
 import os
-from bs4 import BeautifulSoup
 import pandas as pd
+from bs4 import BeautifulSoup
+from data_processing.config import text_column, id_column, line_column, file_column, relevant_flag, novel_flag
 
 
 def get_data_path(dataset_name):
@@ -60,7 +61,7 @@ def get_metadata(data_path, dataset_name, year, novel=False):
 
 
 def convert_data_to_df(file_list, dataset, year):
-    df = pd.DataFrame(columns=['text', 'docid', 'line_number', 'file'])
+    df = pd.DataFrame(columns=[text_column, id_column, line_column, file_column])
     for file in file_list:
 
         print((file))
@@ -77,7 +78,7 @@ def convert_data_to_df(file_list, dataset, year):
         data = BeautifulSoup(data, "lxml")
         data = data.find_all('s')
         for i in data:
-            df2 = {'text': i.text, 'docid': i.get('docid'), 'line_number': i.get('num'), 'file': file}
+            df2 = {text_column: i.text, id_column: i.get('docid'), line_column: i.get('num'), file_column: file}
             df = df.append(df2, ignore_index=True)
     return df
 
@@ -85,7 +86,7 @@ def convert_data_to_df(file_list, dataset, year):
 def add_flag(df, metadata, flag_column):
     df[flag_column] = False
     for i in metadata:
-        df.loc[(df["file"] == i[0]) & (df["docid"] == i[1]) & (df["line_number"] == i[2]), flag_column] = True
+        df.loc[(df[file_column] == i[0]) & (df[id_column] == i[1]) & (df[line_column] == i[2]), flag_column] = True
     return df
 
 
@@ -113,12 +114,12 @@ if __name__ == '__main__':
     df = convert_data_to_df(file_list, dataset_name, year)
 
     # Add flags for relevant and novel data
-    df = add_flag(df, relevant_data_meta, 'relevant_flag')
-    df = add_flag(df, novel_data_meta, 'novel_flag')
+    df = add_flag(df, relevant_data_meta, relevant_flag)
+    df = add_flag(df, novel_data_meta, novel_flag)
 
     # Export data
     df = df.drop_duplicates()
     print('full data size: ', len(df))
-    print('relevant data count: ', len(df[df['relevant_flag'] == True]))
-    print('novel data count: ', len(df[df['novel_flag'] == True]))
+    print('relevant data count: ', len(df[df[relevant_flag] == True]))
+    print('novel data count: ', len(df[df[novel_flag] == True]))
     df.to_parquet(os.path.join(data_path, year + '.parquet'))
