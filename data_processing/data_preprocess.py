@@ -11,7 +11,7 @@ nltk.download('popular', quiet=True)
 from nltk.stem import WordNetLemmatizer, porter
 from nltk.corpus import stopwords
 from data_processing.data_extract import get_data_path
-from data_processing.config import text_column, relevant_flag, novel_flag
+from config import text_column, relevant_flag, novel_flag
 
 
 def load_data(dataset_name, year):

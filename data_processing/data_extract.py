@@ -5,7 +5,7 @@ sys.path.insert(0, os.getcwd())
 
 import pandas as pd
 from bs4 import BeautifulSoup
-from data_processing.config import text_column, id_column, line_column, file_column, relevant_flag, novel_flag
+from config import text_column, id_column, line_column, file_column, relevant_flag, novel_flag
 
 
 def get_data_path(dataset_name):
