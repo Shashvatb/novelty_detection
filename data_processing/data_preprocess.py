@@ -8,6 +8,7 @@ import pandas as pd
 import nltk
 
 nltk.download('popular', quiet=True)
+
 from nltk.stem import WordNetLemmatizer, porter
 from nltk.corpus import stopwords
 from data_processing.data_extract import get_data_path
