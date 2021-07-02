@@ -41,6 +41,7 @@ def remove_stopwords_helper(x, words):
 
 def remove_stopwords(df):
     words = stopwords.words('english')
+    words.remove('it')
     df[text_column] = df[text_column].apply(lambda x: remove_stopwords_helper(x, words))
     return df
 
@@ -72,6 +73,7 @@ def stem_text(df):
 
 
 def final_cleanup(df):
+    print('Data size before cleanup: ', len(df))
     df = df.fillna('')
     df = df[df[text_column] != '']
     return df
