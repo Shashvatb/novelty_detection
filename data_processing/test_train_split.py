@@ -51,16 +51,24 @@ def create_test_train_data(df_novel, df_non_novel, fraction):
     test_length = len(test)
     assert l-test_length == len(train)
 
-    test = test.append(df_non_novel.sample(n=test_length))
+    validate = test.sample(frac=0.5)
+    test = test.drop(validate.index)
+
+    validate_temp = df_non_novel.sample(n=test_length // 2)
+    validate = validate.append(validate_temp)
+    df_non_novel = df_non_novel.drop(validate_temp.index)
+    test = test.append(df_non_novel.sample(n=test_length//2))
 
     print('Size of Train data: ', len(train))
+    print('Size of validate data: ', len(validate))
     print('Size of Test data: ', len(test))
-    return train, test
+    return train, validate, test
 
 
-def export_test_train_df(df_train, df_test, dataset):
+def export_test_train_df(df_train, df_validate, df_test, dataset):
     path = get_data_path(dataset)
     df_train.to_parquet(os.path.join(path, 'train.parquet'))
+    df_validate.to_parquet(os.path.join(path, 'validate.parquet'))
     df_test.to_parquet(os.path.join(path, 'test.parquet'))
 
 
@@ -77,6 +85,6 @@ if __name__ == '__main__':
     df_novel, df_non_novel = segregate_data(df, 'novel_flag', 'relevant_flag')
     del df
 
-    df_train, df_test = create_test_train_data(df_novel, df_non_novel, fraction)
+    df_train, df_validate, df_test = create_test_train_data(df_novel, df_non_novel, fraction)
     del df_novel, df_non_novel
-    export_test_train_df(df_train, df_test, dataset_name)
+    export_test_train_df(df_train, df_validate, df_test, dataset_name)

@@ -58,7 +58,7 @@ class MemNet(object):
         vectors = self.input_layer(x)
 
         assert len(vectors[0]) == len(vectors[1])
-        
+
         with open(os.path.join(self.path, 'memory.pkl'), 'wb') as f:
             pickle.dump(vectors, f)
 
