@@ -50,14 +50,23 @@ def create_test_train_data(df_novel, df_non_novel, fraction):
     test = df_novel.drop(train.index)
     test_length = len(test)
     assert l-test_length == len(train)
+    print('Novel sentences in train: ', len(train))
 
     validate = test.sample(frac=0.5)
-    test = test.drop(validate.index)
+    print('Novel sentences in validate: ', len(validate))
 
-    validate_temp = df_non_novel.sample(n=test_length // 2)
-    validate = validate.append(validate_temp)
+    test = test.drop(validate.index)
+    print('Novel sentences in test: ', len(test))
+
+    validate_temp = df_non_novel.sample(n=len(validate))
     df_non_novel = df_non_novel.drop(validate_temp.index)
-    test = test.append(df_non_novel.sample(n=test_length//2))
+
+    test_temp = df_non_novel.sample(n=len(test))
+    df_non_novel = df_non_novel.drop(test_temp.index)
+
+    validate = validate.append(validate_temp)
+    test = test.append(test_temp)
+    train = train.append(df_non_novel)
 
     print('Size of Train data: ', len(train))
     print('Size of validate data: ', len(validate))
@@ -70,7 +79,7 @@ def export_test_train_df(df_train, df_validate, df_test, dataset):
     df_train.to_parquet(os.path.join(path, 'train.parquet'))
     df_validate.to_parquet(os.path.join(path, 'validate.parquet'))
     df_test.to_parquet(os.path.join(path, 'test.parquet'))
-
+    print(df_test.columns)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
