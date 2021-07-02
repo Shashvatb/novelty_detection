@@ -73,9 +73,9 @@ def convert_data_to_df(file_list, dataset, year):
 
         if dataset == 'trec':
             if year == '2004':
-                file = 'N' + file.split('\\')[-1].split('.')[0]
+                file = 'N' + os.path.split(file)[-1].split('.')[0]
             elif year == '2003':
-                file = file.split('\\')[-1].split('.')[0]
+                file = os.path.split(file)[-1].split('.')[0]
         # TODO RTE
 
         data = BeautifulSoup(data, "lxml")
