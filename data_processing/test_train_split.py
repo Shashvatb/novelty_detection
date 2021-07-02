@@ -79,7 +79,7 @@ def export_test_train_df(df_train, df_validate, df_test, dataset):
     df_train.to_parquet(os.path.join(path, 'train.parquet'))
     df_validate.to_parquet(os.path.join(path, 'validate.parquet'))
     df_test.to_parquet(os.path.join(path, 'test.parquet'))
-    print(df_test.columns)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
