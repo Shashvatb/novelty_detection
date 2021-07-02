@@ -1,16 +1,18 @@
 import argparse
 import os
 import sys
-import numpy as np
 import pandas as pd
 
 sys.path.insert(0, os.getcwd())
+
 from modelling.model import MemNet
 from data_processing.data_preprocess import get_data_path
-from config import text_column
+from config import text_column, novel_flag
 
 
-def get_sentences(df):
+def get_sentences(df, col=None, val=None):
+    if col:
+        df = df[df[col] == val]
     sentences = df[text_column].tolist()
     return sentences
 
@@ -35,4 +37,5 @@ if __name__ == '__main__':
     model = MemNet(path, train=True)
     model.input_layer_train(sentences)
 
+    sentences = get_sentences(train_data, novel_flag, val=True)
     model.memory_unit_train(sentences)
