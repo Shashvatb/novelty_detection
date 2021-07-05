@@ -11,7 +11,6 @@ class MemNet(object):
         if not train:
             with open(os.path.join(path, 'vectorizer.pkl'), 'rb') as f:
                 self.I = pickle.load(f)
-            print(self.I.wv['chile'])
             with open(os.path.join(path, 'memory.pkl'), 'rb') as f:
                 self.M = pickle.load(f)
 
@@ -41,7 +40,11 @@ class MemNet(object):
                         sentence.append(self.I.wv[j])
                     except KeyError:
                         pass
-                assert len(sentence) != 0
+                try:
+                    assert len(sentence) != 0
+                except AssertionError:
+                    print(i)
+                    sentence.append(np.array([np.inf] * 100))
                 y_hat.append(np.mean(sentence, axis=0).reshape(100))
         elif type(x) == str:
             words = x.split()
@@ -70,24 +73,21 @@ class MemNet(object):
             if type(x) == str:
                 x = [x]
             for i in x:
-                i = np.array([i] * len(self.M))
-                print(i.shape)
-                print(self.M.shape)
-                best = self.G(self.M, i)
-                print(best.shape)
-                exit()
-                # best = 0.0
-                # for j in self.M:
-                #     temp = self.G(j, i)
-                #     if temp > best:
-                #         best = temp
+                i = i.reshape(1, -1)
+                best = 0.0
+                for j in self.M:
+                    j = j.reshape(1, -1)
+                    temp = self.G(j, i)
+                    temp = temp[0][0]
+                    if temp > best:
+                        best = temp
                 similarities.append(best)
             return similarities
         else:
             print(type(x))
             return None
 
-    def inf(self, x, threshold):
+    def inference(self, x, threshold):
         vals = []
         for i in x:
             if i >= threshold:
