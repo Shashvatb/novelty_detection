@@ -12,7 +12,7 @@ from time import time
 from modelling.model import MemNet
 from data_processing.data_preprocess import get_data_path
 from modelling.train import get_sentences
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score
 
 from config import text_column, novel_flag
 
@@ -51,3 +51,6 @@ if __name__ == '__main__':
     vals = model.inference(similarities, )
     assert len(vals) == len(df)
     print('test F1 score: ', f1_score(df[novel_flag], vals))
+    print('test precision score: ', precision_score(df[novel_flag], vals))
+    print('test recall score: ', recall_score(df[novel_flag], vals))
+    print('test accuracy score: ', accuracy_score(df[novel_flag], vals))
