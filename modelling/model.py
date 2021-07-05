@@ -11,6 +11,7 @@ class MemNet(object):
         if not train:
             with open(os.path.join(path, 'vectorizer.pkl'), 'rb') as f:
                 self.I = pickle.load(f)
+            print(self.I.wv['chile'])
             with open(os.path.join(path, 'memory.pkl'), 'rb') as f:
                 self.M = pickle.load(f)
 
@@ -40,7 +41,8 @@ class MemNet(object):
                         sentence.append(self.I.wv[j])
                     except KeyError:
                         pass
-                y_hat.append(np.mean(sentence, axis=0))
+                assert len(sentence) != 0
+                y_hat.append(np.mean(sentence, axis=0).reshape(100))
         elif type(x) == str:
             words = x.split()
             sentence = []
@@ -49,10 +51,10 @@ class MemNet(object):
                     sentence.append(self.I.wv[j])
                 except KeyError:
                     pass
-            y_hat.append(np.mean(sentence, axis=0))
+            y_hat.append(np.mean(sentence, axis=0).reshape(100))
         else:
             print(type(x))
-        return y_hat
+        return np.array(y_hat)
 
     def memory_unit_train(self, x):
         vectors = self.input_layer(x)
@@ -68,11 +70,17 @@ class MemNet(object):
             if type(x) == str:
                 x = [x]
             for i in x:
-                best = 0.0
-                for j in self.M:
-                    temp = self.G(j, i)
-                    if temp > best:
-                        best = temp
+                i = np.array([i] * len(self.M))
+                print(i.shape)
+                print(self.M.shape)
+                best = self.G(self.M, i)
+                print(best.shape)
+                exit()
+                # best = 0.0
+                # for j in self.M:
+                #     temp = self.G(j, i)
+                #     if temp > best:
+                #         best = temp
                 similarities.append(best)
             return similarities
         else:
