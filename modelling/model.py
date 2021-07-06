@@ -73,6 +73,9 @@ class MemNet(object):
             if type(x) == str:
                 x = [x]
             for i in x:
+                if i[0] == np.inf:
+                    similarities.append(0.0)
+                    continue
                 i = i.reshape(1, -1)
                 best = 0.0
                 for j in self.M:
