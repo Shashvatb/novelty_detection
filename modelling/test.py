@@ -48,7 +48,7 @@ if __name__ == '__main__':
     print(time() - s)
     print()
 
-    vals = model.inference(similarities, )
+    vals = model.inference(similarities, 0.3)
     assert len(vals) == len(df)
     print('test F1 score: ', f1_score(df[novel_flag], vals))
     print('test precision score: ', precision_score(df[novel_flag], vals))
