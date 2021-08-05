@@ -4,6 +4,8 @@ import argparse
 import os
 import sys
 import warnings
+import pickle
+
 warnings.filterwarnings("ignore")
 
 sys.path.insert(0, os.getcwd())
@@ -42,7 +44,13 @@ if __name__ == '__main__':
     print()
 
     s = time()
-    similarities = model.memory_unit(vectors)
+    if os.path.exists(os.path.join(path, 'validation_similarities.pkl')):
+        with open(os.path.join(path, 'validation_similarities.pkl'), 'rb') as f:
+            similarities = pickle.load(f)
+    else:
+        similarities = model.memory_unit(vectors)
+        with open(os.path.join(path, 'validation_similarities.pkl'), 'wb') as f:
+            pickle.dump(similarities, f)
     print('similarities calculated')
     print(time() - s)
     print()
@@ -51,18 +59,21 @@ if __name__ == '__main__':
     score = []
     thresh = []
 
-    for i in np.arange(0.2, 1, 0.001):
+    for i in np.arange(0, 1, 0.01):
         s = time()
         vals = model.inference(similarities, i)
         assert len(vals) == len(df)
         thresh.append(i)
         score.append([f1_score(df[novel_flag], vals), precision_score(df[novel_flag], vals),
-                      recall_score(df[novel_flag], vals), accuracy_score(df[novel_flag], vals)])
+                      recall_score(df[novel_flag], vals), accuracy_score(df[novel_flag], vals),
+                      vals.count(True), vals.count(False)])
 
     metric_df['cosine_sim'] = thresh
     metric_df['f1_score'] = [i[0] for i in score]
     metric_df['precision_score'] = [i[1] for i in score]
     metric_df['recall_score'] = [i[2] for i in score]
     metric_df['accuracy_score'] = [i[3] for i in score]
+    metric_df['number_true'] = [i[4] for i in score]
+    metric_df['number_false'] = [i[5] for i in score]
 
     metric_df.to_excel(os.path.join(path, 'hyperparam.xlsx'), engine='xlsxwriter', index=False)
