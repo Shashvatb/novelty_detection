@@ -5,7 +5,6 @@ import lasagne
 import pickle
 import numpy as np
 import random
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 import modelling.nn_utils as nn_utils
 import modelling.utils as utils
@@ -297,10 +296,6 @@ class DMN_basic:
         # self.net_w = lasagne.init.GlorotUniform(gain=0.25)
 
         # Input layer, as usual:
-        tokenizer = AutoTokenizer.from_pretrained("textattack/bert-base-uncased-ag-news")
-
-        model = AutoModelForSequenceClassification.from_pretrained("textattack/bert-base-uncased-ag-news")
-
         network1 = lasagne.layers.InputLayer(shape=(len(input_var), 1, self.vocab_length, self.max_doc_length),
                                              input_var=np.array(input_var))
         print(lasagne.layers.get_output(network1, input_var).shape.eval())
