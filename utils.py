@@ -1,6 +1,7 @@
 import pandas as pd
 from config import novel_flag, unique_ids, text_column
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from theano.tensor import _shared
 
 
 def load_featurizer():
@@ -17,7 +18,7 @@ def gen_observations(data, tokenizer, model):
     for i in range(len(data)):
         inputs = tokenizer(data[i], return_tensors="pt")
         outputs = model(**inputs, labels=labels[i])
-        result += outputs[0]
+        result += _shared(outputs[0].detach().numpy())
 
     assert len(result) == len(labels)
     assert len(result) == len(ids)
