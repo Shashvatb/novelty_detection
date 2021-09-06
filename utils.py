@@ -28,6 +28,8 @@ def gen_observations(data, tokenizer, model):
 
 def load_data(path):
     df = pd.DataFrame()
+    print(path)
     for i in path:
         df.append(pd.read_parquet(i))
+        print('length of data: ', len(df))
     return df
