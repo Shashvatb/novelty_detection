@@ -30,6 +30,8 @@ def load_data(path):
     df = pd.DataFrame()
     print(path)
     for i in path:
-        df.append(pd.read_parquet(i))
-        print('length of data: ', len(df))
+        df_temp = pd.read_parquet(i)
+        print('length of data: ', len(df_temp))
+        df.append(df_temp)
+
     return df
