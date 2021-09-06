@@ -2,7 +2,7 @@ Theano==0.8.2
 numpy~=1.19.3
 scikit-learn~=0.24.1
 transformers==4.7.0
-torch==1.1.0
+torch==1.9.0
 Lasagne @ https://github.com/Lasagne/Lasagne/archive/master.zip
 pandas~=1.1.4
 sklearn~=0.0
