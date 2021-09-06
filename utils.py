@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 from config import novel_flag, unique_ids, text_column
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from theano.tensor import _shared
@@ -30,6 +31,7 @@ def load_data(path):
     df = pd.DataFrame()
     print(path)
     for i in path:
+        print(os.path.exists(i))
         df_temp = pd.read_parquet(i)
         print('length of data: ', len(df_temp))
         df.append(df_temp)
