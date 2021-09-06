@@ -34,6 +34,7 @@ def load_data(path):
         print(os.path.exists(i))
         df_temp = pd.read_parquet(i)
         print('length of data: ', len(df_temp))
-        df.append(df_temp)
+        df = df.append(df_temp)
+    print('Length of final df: ',len(df))
 
     return df
