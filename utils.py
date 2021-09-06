@@ -11,6 +11,7 @@ def load_featurizer():
 
 
 def gen_observations(data, tokenizer, model):
+    print('list of columns: ', list(data.columns))
     labels = data[novel_flag].tolist()
     ids = data[unique_ids].tolist()
     data = data[text_column].tolist()
