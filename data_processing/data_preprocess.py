@@ -84,12 +84,12 @@ def export_data(df, dataset_name, year):
     file = os.path.join(path, f'{year}_preprocessed.parquet')
     df.to_parquet(file)
     file = os.path.join(path, f'{year}_preprocessed.xlsx')
-    df.head(50).to_excel(file, engine='xlsxwriter', index=False)
+    df.sample(1).head(50).to_excel(file, engine='xlsxwriter', index=False)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--year', default='2004')
+    parser.add_argument('--year', default='2003')
     parser.add_argument('--dataset', default='trec')
     parser.add_argument('-lemmatize', action='store_true', default=True)
     parser.add_argument('-stem', action='store_true', default=False)
