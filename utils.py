@@ -26,8 +26,9 @@ def gen_observations(data, tokenizer, model):
     for i in range(len(data)):
         inputs = tokenizer(data[i], return_tensors="pt").to(device)
         outputs = model(**inputs, labels=labels[i], output_hidden_states=True)
+        outputs = outputs.hidden_states
         if i == 0:
-            print(outputs)
+            print(outputs.size())
         result += _shared(outputs[0].cpu().detach().numpy())
 
     assert len(result) == len(labels)
