@@ -15,7 +15,7 @@ def load_featurizer():
 def gen_observations(data, tokenizer, model):
     # print(model)
     labels = data[novel_flag].tolist()
-    labels = [torch.FloatTensor(i) for i in labels]
+    labels = [torch.FloatTensor([int(i)]) for i in labels]
     ids = data[unique_ids].tolist()
     data = data[text_column].tolist()
     result = []
