@@ -28,8 +28,8 @@ def gen_observations(data, tokenizer, model):
         outputs = model(**inputs, labels=labels[i], output_hidden_states=True)
         outputs = outputs.hidden_states
         if i == 0:
-            print(outputs[-1].mean(0).size())
-        result += _shared(outputs[0].cpu().detach().numpy())
+            print(outputs[-1].mean(1).size())
+        result += _shared(outputs.cpu().detach().numpy())
 
     assert len(result) == len(labels)
     assert len(result) == len(ids)
