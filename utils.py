@@ -3,6 +3,7 @@ import os
 from config import novel_flag, unique_ids, text_column
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from theano.tensor import _shared
+from theano import tensor as T, function, printing
 import torch
 import numpy as np
 
@@ -27,8 +28,10 @@ def gen_observations(data, tokenizer, model):
         outputs = model(**inputs, labels=labels[i])
         result += _shared(outputs[0].cpu().detach().numpy())
         if i == 0:
-            print(result[0].shape)
-            print(result)
+            printing_op = printing.Print('vector', attrs=['shape'])
+            printed_x = printing_op(result[0])
+            f = function([result[0]], printed_x)
+            print(f(result[0]))
 
     assert len(result) == len(labels)
     assert len(result) == len(ids)
