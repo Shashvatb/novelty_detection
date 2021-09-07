@@ -6,22 +6,24 @@ from theano.tensor import _shared
 import torch
 import numpy as np
 
+device = torch.device('cuda')
+
 
 def load_featurizer():
-    tokenizer = AutoTokenizer.from_pretrained("textattack/bert-base-uncased-ag-news")
-    model = AutoModelForSequenceClassification.from_pretrained("textattack/bert-base-uncased-ag-news")
+    tokenizer = AutoTokenizer.from_pretrained("textattack/bert-base-uncased-ag-news").to(device)
+    model = AutoModelForSequenceClassification.from_pretrained("textattack/bert-base-uncased-ag-news").to(device)
     return tokenizer, model
 
 
 def gen_observations(data, tokenizer, model):
     # print(model)
     labels = data[novel_flag].tolist()
-    labels = [torch.from_numpy(np.array(int(i))) for i in labels]
+    labels = [torch.from_numpy(np.array(int(i))).to(device) for i in labels]
     ids = data[unique_ids].tolist()
     data = data[text_column].tolist()
     result = []
     for i in range(len(data)):
-        inputs = tokenizer(data[i], return_tensors="pt")
+        inputs = tokenizer(data[i], return_tensors="pt").to(device)
         outputs = model(**inputs, labels=labels[i])
         result += _shared(outputs[0].detach().numpy())
 
@@ -38,6 +40,6 @@ def load_data(path):
         df_temp = pd.read_parquet(i)
         print('length of data: ', len(df_temp))
         df = df.append(df_temp)
-    print('Length of final df: ',len(df))
+    print('Length of final df: ', len(df))
 
     return df
