@@ -11,7 +11,7 @@ from config import text_column, id_column, line_column, file_column, relevant_fl
 def get_data_path(dataset_name):
     if dataset_name.lower() == 'trec':
         return os.path.join(
-            os.getcwd(), '..', '..', 'data', 'trec'
+            os.getcwd(), '..', 'data', 'trec'
         )
     # TODO RTE
 
