@@ -84,7 +84,7 @@ def export_data(df, dataset_name, year):
     file = os.path.join(path, f'{year}_preprocessed.parquet')
     df.to_parquet(file)
     file = os.path.join(path, f'{year}_preprocessed.xlsx')
-    df.sample(1).head(50).to_excel(file, engine='xlsxwriter', index=False)
+    df.sample(frac=1).head(50).to_excel(file, engine='xlsxwriter', index=False)
 
 
 if __name__ == '__main__':
