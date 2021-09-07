@@ -16,7 +16,7 @@ def load_featurizer():
     return tokenizer, model
 
 
-def gen_observations(data, tokenizer, model):
+def gen_observations(data, tokenizer, model, num_layers=1):
     # print(model)
     labels = data[novel_flag].tolist()
     labels = [torch.from_numpy(np.array(int(i))).to(device) for i in labels]
@@ -28,7 +28,7 @@ def gen_observations(data, tokenizer, model):
         outputs = model(**inputs, labels=labels[i], output_hidden_states=True)
         outputs = outputs.hidden_states
         if i == 0:
-            print(outputs[-1:].mean(1)[0].size())
+            print(torch.stack(outputs[-num_layers:]).mean(1)[0].size())
         result += _shared(outputs.cpu().detach().numpy())
 
     assert len(result) == len(labels)
