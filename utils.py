@@ -4,6 +4,7 @@ from config import novel_flag, unique_ids, text_column
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from theano.tensor import _shared
 import torch
+import numpy as np
 
 
 def load_featurizer():
@@ -15,7 +16,7 @@ def load_featurizer():
 def gen_observations(data, tokenizer, model):
     # print(model)
     labels = data[novel_flag].tolist()
-    labels = [torch.FloatTensor([int(i)]) for i in labels]
+    labels = [torch.from_numpy(np.array(int(i))) for i in labels]
     ids = data[unique_ids].tolist()
     data = data[text_column].tolist()
     result = []
