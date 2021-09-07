@@ -5,7 +5,6 @@ import lasagne
 import pickle
 import numpy as np
 import random
-
 import modelling.nn_utils as nn_utils
 import modelling.utils as utils
 

@@ -5,13 +5,13 @@ sys.path.insert(0, os.getcwd())
 
 import pandas as pd
 from bs4 import BeautifulSoup
-from config import text_column, id_column, line_column, file_column, relevant_flag, novel_flag
+from config import text_column, id_column, line_column, file_column, relevant_flag, novel_flag, unique_ids
 
 
 def get_data_path(dataset_name):
     if dataset_name.lower() == 'trec':
         return os.path.join(
-            os.getcwd(), '..', 'data', 'trec'
+            os.getcwd(), '..', '..', 'data', 'trec'
         )
     # TODO RTE
 
@@ -67,7 +67,7 @@ def convert_data_to_df(file_list, dataset, year):
     df = pd.DataFrame(columns=[text_column, id_column, line_column, file_column])
     for file in file_list:
 
-        print((file))
+        print(file)
         with open(file, 'r') as f:
             data = f.read()
 
@@ -81,7 +81,8 @@ def convert_data_to_df(file_list, dataset, year):
         data = BeautifulSoup(data, "lxml")
         data = data.find_all('s')
         for i in data:
-            df2 = {text_column: i.text, id_column: i.get('docid'), line_column: i.get('num'), file_column: file}
+            df2 = {text_column: i.text, id_column: i.get('docid'), line_column: i.get('num'), file_column: file,
+                   unique_ids: i.get('docid')+'_'+i.get('num')}
             df = df.append(df2, ignore_index=True)
     return df
 
@@ -96,7 +97,7 @@ def add_flag(df, metadata, flag_column):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--year', default='2003')
+    parser.add_argument('--year', default='2004')
     parser.add_argument('--dataset', default='trec')
 
     args = parser.parse_args()
