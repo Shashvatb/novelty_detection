@@ -11,7 +11,7 @@ device = torch.device('cuda')
 
 def load_featurizer():
     tokenizer = AutoTokenizer.from_pretrained("textattack/bert-base-uncased-ag-news")
-    model = AutoModelForSequenceClassification.from_pretrained("textattack/bert-base-uncased-ag-news")
+    model = AutoModelForSequenceClassification.from_pretrained("textattack/bert-base-uncased-ag-news").to(device)
     return tokenizer, model
 
 
