@@ -27,7 +27,7 @@ def gen_observations(data, tokenizer, model):
         outputs = model(**inputs, labels=labels[i])
         result += _shared(outputs[0].cpu().detach().numpy())
         if i == 0:
-            print(len(result[0]))
+            print(result[0].shape)
             print(result)
 
     assert len(result) == len(labels)
