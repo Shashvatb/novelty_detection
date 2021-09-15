@@ -67,7 +67,7 @@ def parse_args(given_args=None):
         args.input_train.split("/")[-1])
 
 
-def run_mem_net(train_data, test_data, seed=1, word_vector_size=50,
+def run_mem_net(train_data, test_data, seed=1, word_vector_size=786,
                 network='dmn_basic', batch_size=16, epochs=10, vector_type="word2vec",
                 shuffle=False, log_every=100, save_every=2, network_name_pre='', memory_hops=5, dim=40,
                 normalize_attention=False, batch_norm=False, dropout=0.0,
@@ -95,7 +95,7 @@ def run_mem_net(train_data, test_data, seed=1, word_vector_size=50,
     args_dict['num_cnn_layers'] = 20
     args_dict['maximum_doc_len'] = 200
 
-    # args_dict['word_vector_size'] = word_vector_size
+    args_dict['word_vector_size'] = word_vector_size
     args_dict['dim'] = dim
     args_dict['mode'] = "train"
     args_dict['answer_module'] = answer_module
