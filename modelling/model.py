@@ -297,7 +297,7 @@ class DMN_basic:
         # self.net_w = lasagne.init.GlorotUniform(gain=0.25)
 
         # Input layer, as usual:
-        network1 = lasagne.layers.InputLayer(shape=(len(input_var), 1, vocab_length),
+        network1 = lasagne.layers.InputLayer(shape=(len(input_var), 1, 1, vocab_length),
                                              input_var=np.array(input_var))
         print(lasagne.layers.get_output(network1, input_var).shape)
         # This time we do not apply input dropout, as it tends to work less well
@@ -306,7 +306,7 @@ class DMN_basic:
         # Convolutional layer with 32 kernels of size 5x5. Strided and padded
         # convolutions are supported as well; see the docstring.
         network2 = lasagne.layers.Conv2DLayer(
-            network1, num_filters=32, filter_size=(36, 5),
+            network1, num_filters=32, filter_size=(1, 5),
             nonlinearity=lasagne.nonlinearities.rectify,
             W=self.net2_w)
         # TODO tweek with smaller range of weights
