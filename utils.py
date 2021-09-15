@@ -23,13 +23,14 @@ def gen_observations(data, tokenizer, model, num_layers=1):
     ids = data[unique_ids].tolist()
     data = data[text_column].tolist()
     result = []
+    max = 0
     for i in range(len(data)):
         inputs = tokenizer(data[i], return_tensors="pt", padding=True).to(device)
         outputs = model(**inputs, labels=labels[i], output_hidden_states=True)
         outputs = outputs.hidden_states
         outputs = outputs[-num_layers]
-        print(outputs.shape)
-        exit(0)
+        if outputs.shape[1] > max:
+            print(outputs.shape)
         # result.append(_shared(outputs.cpu().detach().numpy()))
         result.append(outputs.cpu().detach().numpy())
 
