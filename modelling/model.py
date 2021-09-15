@@ -49,8 +49,10 @@ class DMN_basic:
         print(type(self.train_input_raw), len(self.train_input_raw))
         self.train_input = self.build_cnn(self.train_input_raw)
         self.test_input = self.build_cnn(self.test_input_raw)
-        self.train_q = self.build_cnn(self.train_q_raw)
-        self.test_q = self.build_cnn(self.test_q_raw)
+        self.train_q =self.train_input
+        self.test_q =  self.train_input
+        # self.train_q = self.build_cnn(self.train_q_raw)
+        # self.test_q = self.build_cnn(self.test_q_raw)
         # print(self.train_input.shape.eval(), self.train_input.__getitem__(0).eval())
         # print(type(self.train_input), len(self.train_input), len(self.train_input[1]))
         # print(type(self.train_input), len(self.train_input), len(self.train_input[1]))
@@ -360,62 +362,62 @@ class DMN_basic:
         Returns:
             inputs section, answers section, questions section, and input_masks as numpy arrays.
         """
-        inputs = []
-        answers = []
-        input_masks = []
-        questions = []
-        for x in data_raw:
-            # inp = x["C"].lower().split(' ')
-            # inp = [w for w in inp if len(w) > 0]
-            # q = x["Q"].lower().split(' ')
-            # q = [w for w in q if len(w) > 0]
-
-            inp = utils.get_one_hot_doc(x["C"], self.char_vocab, max_length=self.max_doc_length)
-            q = utils.get_one_hot_doc(x["Q"], self.char_vocab, max_length=self.max_doc_length)
-
-            # # Process the words from the input, answers, and questions to see what needs a new vector in word2vec.
-            # inp_vector = [utils.process_word(word = w,
-            #                             word2vec = self.word2vec,
-            #                             vocab = self.vocab,
-            #                             ivocab = self.ivocab,
-            #                             word_vector_size = self.word_vector_size,
-            #                             to_return = "word2vec") for w in inp]
-            #
-            # q_vector = [utils.process_word(word = w,
-            # 		word2vec = self.word2vec,
-            # 	vocab = self.vocab,
-            # 	ivocab = self.ivocab,
-            # 	word_vector_size = self.word_vector_size,
-            # 	to_return = "word2vec") for w in q]
-            #
-            # inputs.append(np.vstack(inp_vector).astype(floatX))
-            # questions.append(np.vstack(q_vector).astype(floatX))
-            answers.append(utils.process_word(word=x["A"],
-                                              word2vec=self.word2vec,
-                                              vocab=self.vocab,
-                                              ivocab=self.ivocab,
-                                              word_vector_size=self.word_vector_size,
-                                              to_return="index"))
-
-            # NOTE: here we assume the answer is one word!
-            if self.input_mask_mode == 'word':
-                input_masks.append(np.array([index for index, w in enumerate(inp)],
-                                            dtype=np.int32))  # Get the input_masks for the data
-            elif self.input_mask_mode == 'sentence':
-                input_masks.append(np.array([index for index, w in enumerate(inp) if w == '.'], dtype=np.int32))
-            else:
-                raise Exception("invalid input_mask_mode")
-            # print(x["C"])
-            # print(inp.shape)
-            # print(inp[0])
-            # inp_vector = self.build_cnn(inp)
-            inputs.append(inp)
-            # q_vector = self.build_cnn(q)
-            questions.append(q)
+        # inputs = []
+        # answers = []
+        # input_masks = []
+        # questions = []
+        # for x in data_raw:
+        #     # inp = x["C"].lower().split(' ')
+        #     # inp = [w for w in inp if len(w) > 0]
+        #     # q = x["Q"].lower().split(' ')
+        #     # q = [w for w in q if len(w) > 0]
+        #
+        #     inp = utils.get_one_hot_doc(x["C"], self.char_vocab, max_length=self.max_doc_length)
+        #     q = utils.get_one_hot_doc(x["Q"], self.char_vocab, max_length=self.max_doc_length)
+        #
+        #     # # Process the words from the input, answers, and questions to see what needs a new vector in word2vec.
+        #     # inp_vector = [utils.process_word(word = w,
+        #     #                             word2vec = self.word2vec,
+        #     #                             vocab = self.vocab,
+        #     #                             ivocab = self.ivocab,
+        #     #                             word_vector_size = self.word_vector_size,
+        #     #                             to_return = "word2vec") for w in inp]
+        #     #
+        #     # q_vector = [utils.process_word(word = w,
+        #     # 		word2vec = self.word2vec,
+        #     # 	vocab = self.vocab,
+        #     # 	ivocab = self.ivocab,
+        #     # 	word_vector_size = self.word_vector_size,
+        #     # 	to_return = "word2vec") for w in q]
+        #     #
+        #     # inputs.append(np.vstack(inp_vector).astype(floatX))
+        #     # questions.append(np.vstack(q_vector).astype(floatX))
+        #     answers.append(utils.process_word(word=x["A"],
+        #                                       word2vec=self.word2vec,
+        #                                       vocab=self.vocab,
+        #                                       ivocab=self.ivocab,
+        #                                       word_vector_size=self.word_vector_size,
+        #                                       to_return="index"))
+        #
+        #     # NOTE: here we assume the answer is one word!
+        #     if self.input_mask_mode == 'word':
+        #         input_masks.append(np.array([index for index, w in enumerate(inp)],
+        #                                     dtype=np.int32))  # Get the input_masks for the data
+        #     elif self.input_mask_mode == 'sentence':
+        #         input_masks.append(np.array([index for index, w in enumerate(inp) if w == '.'], dtype=np.int32))
+        #     else:
+        #         raise Exception("invalid input_mask_mode")
+        #     # print(x["C"])
+        #     # print(inp.shape)
+        #     # print(inp[0])
+        #     # inp_vector = self.build_cnn(inp)
+        #     inputs.append(inp)
+        #     # q_vector = self.build_cnn(q)
+        #     questions.append(q)
 
             # input_masks = None
 
-        return inputs, questions, answers, input_masks
+        return data_raw, None, None, None
 
     def get_batches_per_epoch(self, mode):
         if (mode == 'train'):
