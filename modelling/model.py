@@ -49,8 +49,8 @@ class DMN_basic:
         print(type(self.train_input_raw), len(self.train_input_raw))
         self.train_input = self.build_cnn(self.train_input_raw, self.word_vector_size)
         self.test_input = self.build_cnn(self.test_input_raw, self.word_vector_size)
-        self.train_q =self.train_input
-        self.test_q =  self.train_input
+        self.train_q = self.train_input
+        self.test_q = self.train_input
         # self.train_q = self.build_cnn(self.train_q_raw)
         # self.test_q = self.build_cnn(self.test_q_raw)
         # print(self.train_input.shape.eval(), self.train_input.__getitem__(0).eval())
@@ -415,7 +415,7 @@ class DMN_basic:
         #     # q_vector = self.build_cnn(q)
         #     questions.append(q)
 
-            # input_masks = None
+        # input_masks = None
 
         return data_raw, None, None, None
 
