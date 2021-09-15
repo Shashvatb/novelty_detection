@@ -299,7 +299,7 @@ class DMN_basic:
         # Input layer, as usual:
         network1 = lasagne.layers.InputLayer(shape=(len(input_var), vocab_length),
                                              input_var=np.array(input_var))
-        print(lasagne.layers.get_output(network1, input_var).shape.eval())
+        print(lasagne.layers.get_output(network1, input_var).shape)
         # This time we do not apply input dropout, as it tends to work less well
         # for convolutional layers.
 
