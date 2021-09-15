@@ -29,7 +29,7 @@ def gen_observations(data, tokenizer, model, num_layers=1):
         outputs = outputs.hidden_states
         outputs = outputs[-num_layers].mean(1)
         # result.append(_shared(outputs.cpu().detach().numpy()))
-        result.append(np.reshape(outputs.cpu().detach().numpy()), [1, 1, -1])
+        result.append(np.reshape(outputs.cpu().detach().numpy(), [1, 1, -1]))
 
     assert len(result) == len(labels)
     assert len(result) == len(ids)
