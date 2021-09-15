@@ -297,7 +297,7 @@ class DMN_basic:
         # self.net_w = lasagne.init.GlorotUniform(gain=0.25)
 
         # Input layer, as usual:
-        network1 = lasagne.layers.InputLayer(shape=(len(input_var), vocab_length),
+        network1 = lasagne.layers.InputLayer(shape=(len(input_var), 1, 1, vocab_length),
                                              input_var=np.array(input_var))
         print(lasagne.layers.get_output(network1, input_var).shape)
         # This time we do not apply input dropout, as it tends to work less well
@@ -311,14 +311,14 @@ class DMN_basic:
             W=self.net2_w)
         # TODO tweek with smaller range of weights
         # print(network2.params.values())
-        print("net2 ", lasagne.layers.get_output(network2, input_var).shape.eval())
+        print("net2 ", lasagne.layers.get_output(network2, input_var).shape)
         # Expert note: Lasagne provides alternative convolutional layers that
         # override Theano's choice of which implementation to use; for details
         # please see http://lasagne.readthedocs.org/en/latest/user/tutorial.html.
 
         # Max-pooling layer of factor 2 in both dimensions:
         network3 = lasagne.layers.MaxPool2DLayer(network2, pool_size=(1, 3))
-        print("net3 ", lasagne.layers.get_output(network3, input_var).shape.eval())
+        print("net3 ", lasagne.layers.get_output(network3, input_var).shape)
         # # Another convolution with 32 5x5 kernels, and another 2x2 pooling:
         # network4 = lasagne.layers.Conv2DLayer(
         #         network3, num_filters=32, filter_size=(1,5),
