@@ -297,7 +297,7 @@ class DMN_basic:
         # self.net_w = lasagne.init.GlorotUniform(gain=0.25)
 
         # Input layer, as usual:
-        network1 = lasagne.layers.InputLayer(shape=(len(input_var), 1, 1, vocab_length),
+        network1 = lasagne.layers.InputLayer(shape=(len(input_var), 1, vocab_length),
                                              input_var=np.array(input_var))
         print(lasagne.layers.get_output(network1, input_var).shape)
         # This time we do not apply input dropout, as it tends to work less well
