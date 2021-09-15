@@ -28,7 +28,6 @@ def gen_observations(data, tokenizer, model, num_layers=1):
         outputs = model(**inputs, labels=labels[i], output_hidden_states=True)
         outputs = outputs.hidden_states
         outputs = outputs[-num_layers].mean(1)
-        print(outputs.shape)
         # result.append(_shared(outputs.cpu().detach().numpy()))
         result.append(outputs.cpu().detach().numpy())
 
