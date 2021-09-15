@@ -22,7 +22,6 @@ def main(dataset_name='trec'):
     directory = {
         'full_data': [join(path, '2003_preprocessed.parquet'), join(path, '2004_preprocessed.parquet')]
     }
-    algorithms = {}
 
     # parsing
     print("parsing json data...", file=sys.stderr)
