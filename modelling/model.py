@@ -47,8 +47,8 @@ class DMN_basic:
         self.vocab_size = len(self.vocab)
 
         print(type(self.train_input_raw), len(self.train_input_raw))
-        self.train_input = self.build_cnn(self.train_input_raw)
-        self.test_input = self.build_cnn(self.test_input_raw)
+        self.train_input = self.build_cnn(self.train_input_raw, self.word_vector_size)
+        self.test_input = self.build_cnn(self.test_input_raw, self.word_vector_size)
         self.train_q =self.train_input
         self.test_q =  self.train_input
         # self.train_q = self.build_cnn(self.train_q_raw)
@@ -285,7 +285,7 @@ class DMN_basic:
             for (x, y) in zip(self.params, loaded_params):
                 x.set_value(y)
 
-    def build_cnn(self, input_var):
+    def build_cnn(self, input_var, vocab_length):
         # We'll create a CNN of two convolution + pooling stages
         # and a fully-connected hidden layer in front of the output layer.
 
@@ -297,7 +297,7 @@ class DMN_basic:
         # self.net_w = lasagne.init.GlorotUniform(gain=0.25)
 
         # Input layer, as usual:
-        network1 = lasagne.layers.InputLayer(shape=(len(input_var), 1, self.vocab_length, self.max_doc_length),
+        network1 = lasagne.layers.InputLayer(shape=(len(input_var), vocab_length),
                                              input_var=np.array(input_var))
         print(lasagne.layers.get_output(network1, input_var).shape.eval())
         # This time we do not apply input dropout, as it tends to work less well

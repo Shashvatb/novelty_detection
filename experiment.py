@@ -38,9 +38,8 @@ def main(dataset_name='trec'):
 
     # modeling
     print("running algorithms...", file=sys.stderr)
-    mem_net_model, model_name = run_mem_net(train_data, test_data, **algorithms['mem_net'])
-    predicted_labels, perform_results = test_mem_network(mem_net_model, model_name,
-                                                         **algorithms['mem_net'])
+    mem_net_model, model_name = run_mem_net(train_data, test_data)
+    predicted_labels, perform_results = test_mem_network(mem_net_model, model_name)
 
     # results
     perform_results = {
