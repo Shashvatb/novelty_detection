@@ -38,7 +38,7 @@ class DMN_basic:
         self.max_doc_length = maximum_doc_len
         self.char_vocab = char_vocab
 
-        self.cnn_layer_length = 100
+        self.cnn_layer_length = word_vector_size
 
         # Process the input into its different parts and calculate the input mask
         self.train_input_raw, self.train_q_raw, self.train_answer, self.train_input_mask = self._process_input(

@@ -1,6 +1,7 @@
 import theano
 import theano.tensor as T
 import lasagne
+import numpy as np
 
 
 def softmax(x):
@@ -14,7 +15,7 @@ def l2_reg(params):
 
 
 def constant_param(value=0.0, shape=(0,)):
-    return theano.shared(lasagne.init.Constant(value).sample(shape), borrow=True)
+    return theano.shared(np.full(shape, value))
 
 
 def normal_param(std=0.1, mean=0.0, shape=(0,)):
