@@ -11,7 +11,7 @@ device = torch.device('cuda')
 
 
 def load_featurizer():
-    tokenizer = AutoTokenizer.from_pretrained("textattack/bert-base-uncased-ag-news")
+    tokenizer = AutoTokenizer.from_pretrained("textattack/bert-base-uncased-ag-news", pad_token=True)
     model = AutoModelForSequenceClassification.from_pretrained("textattack/bert-base-uncased-ag-news").to(device)
     return tokenizer, model
 
@@ -28,10 +28,8 @@ def gen_observations(data, tokenizer, model, num_layers=1):
         outputs = model(**inputs, labels=labels[i], output_hidden_states=True)
         outputs = outputs.hidden_states
         outputs = outputs[-num_layers]
-        print(outputs.shape)
-        exit()
         # result.append(_shared(outputs.cpu().detach().numpy()))
-        result.append(np.reshape(outputs.cpu().detach().numpy(), [1, 1, -1]))
+        result.append(outputs.cpu().detach().numpy())
 
     assert len(result) == len(labels)
     assert len(result) == len(ids)
