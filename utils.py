@@ -27,7 +27,9 @@ def gen_observations(data, tokenizer, model, num_layers=1):
         inputs = tokenizer(data[i], return_tensors="pt").to(device)
         outputs = model(**inputs, labels=labels[i], output_hidden_states=True)
         outputs = outputs.hidden_states
-        outputs = outputs[-num_layers].mean(1)[0]
+        outputs = outputs[-num_layers]
+        print(outputs.shape)
+        exit()
         # result.append(_shared(outputs.cpu().detach().numpy()))
         result.append(np.reshape(outputs.cpu().detach().numpy(), [1, 1, -1]))
 
